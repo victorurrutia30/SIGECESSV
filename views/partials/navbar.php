@@ -1,19 +1,42 @@
-<nav class="main-header navbar navbar-expand navbar-sigeces">
-    <div class="container">
+<?php
+// Navbar de AdminLTE 4 minimalista
+?>
+<nav class="main-header navbar navbar-expand navbar-sigeces navbar-dark">
+    <div class="container-fluid">
+        <?php if (isset($_SESSION['usuario'])): ?>
+            <!-- Toggle del sidebar -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a
+                        class="nav-link text-white"
+                        href="#"
+                        role="button"
+                        data-lte-toggle="sidebar">
+                        <i class="fas fa-bars"></i>
+                    </a>
+                </li>
+            </ul>
+        <?php endif; ?>
 
-        <!-- PushMenu de AdminLTE -->
-        <button class="nav-link text-white me-3" data-widget="pushmenu" type="button">
-            <i class="fas fa-bars"></i>
+        <!-- Marca -->
+        <a href="/SIGECES/index.php" class="navbar-brand text-white fw-bold ms-2">
+            SIGECES
+        </a>
+
+        <!-- Toggler en móvil -->
+        <button
+            class="navbar-toggler border-0"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSigeces"
+            aria-controls="navbarSigeces"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
 
-        <a class="navbar-brand text-white fw-bold" href="/SIGECES/index.php">SIGECES</a>
-
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon custom-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto gap-2">
+        <div class="collapse navbar-collapse" id="navbarSigeces">
+            <ul class="navbar-nav ms-auto">
                 <?php if (isset($_SESSION['usuario'])): ?>
                     <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
                         <li class="nav-item">
@@ -28,19 +51,41 @@
                             </a>
                         </li>
                     <?php endif; ?>
+
                     <li class="nav-item">
                         <a class="nav-link nav-link-sigeces" href="/SIGECES/views/cursos/index.php">
                             <i class="fas fa-chalkboard me-1"></i> Cursos
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-sigeces" href="/SIGECES/controller/logout.php">
-                            <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
+
+                    <li class="nav-item dropdown">
+                        <a
+                            class="nav-link nav-link-sigeces dropdown-toggle"
+                            href="#"
+                            id="userMenuDropdown"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="fas fa-user me-1"></i>
+                            <?= htmlspecialchars($_SESSION['usuario']['nombre']) ?>
                         </a>
+                        <ul
+                            class="dropdown-menu dropdown-menu-end"
+                            aria-labelledby="userMenuDropdown">
+                            <li>
+                                <a
+                                    href="/SIGECES/controller/logout.php"
+                                    class="dropdown-item">
+                                    <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-sigeces" href="/SIGECES/views/usuarios/login.php">
+                        <a
+                            class="nav-link nav-link-sigeces"
+                            href="/SIGECES/views/usuarios/login.php">
                             <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
                         </a>
                     </li>

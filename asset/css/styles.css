@@ -610,3 +610,72 @@
     margin: 0;
   }
   
+  /* Logo compacto en el sidebar */
+.brand-image {
+  width: 35px !important;
+  height: auto !important;
+}
+
+/* Transiciones suaves al togglear el sidebar */
+.app-sidebar {
+  transition: width 0.3s ease-in-out;
+}
+.app-header,
+.content-wrapper {
+  transition: margin-left 0.3s ease-in-out;
+}
+
+
+/* ===== Sidebar minimalista ===== */
+.app-sidebar {
+  background-color: #FFFFFF !important;
+  color: #4F5153;
+  box-shadow: none;
+}
+
+.app-sidebar .brand-link {
+  background-color: transparent;
+  padding: 0.75rem 1rem;
+}
+
+.app-sidebar .brand-image {
+  width: 30px !important;
+  height: auto !important;
+}
+
+.app-sidebar .nav-link {
+  color: #4F5153;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.app-sidebar .nav-link i.nav-icon {
+  color: #FDBA4D;
+  font-size: 1.1rem;
+  margin-right: 0.75rem;
+}
+
+.app-sidebar .nav-link:hover {
+  background-color: rgba(253, 186, 77, 0.15);
+  color: #570926;
+}
+
+.app-sidebar .nav-link.active {
+  background-color: #FDBA4D;
+  color: #ffffff;
+}
+
+.app-sidebar .nav-header,
+.app-sidebar .sidebar .mt-2 > .nav-item + .nav-item {
+  margin-top: 0.5rem;
+}
+.navbar-sigeces .nav-link {
+  color: #ffffff !important;
+}
+
+.navbar-sigeces .nav-link:hover,
+.navbar-sigeces .nav-link:focus {
+  background-color: #FDBA4D !important;
+  color: #570926 !important;
+}
