@@ -68,11 +68,22 @@ class Asignacion
     // Loguear cada acción
     public function logAccion($id_usuario, $id_curso, $actor_id, $accion)
     {
-        $sql = "INSERT INTO log_asignaciones (id_usuario, id_curso, accion, actor_id)
-            VALUES (?, ?, ?, ?)";
+        // Verificar si ya existe un registro exactamente igual en los últimos 2 segundos (previene reenvíos rápidos)
+        $sql = "SELECT COUNT(*) AS total FROM log_asignaciones
+                WHERE id_usuario = ? AND id_curso = ? AND accion = ? AND actor_id = ?
+                  AND fecha_asignacion >= NOW() - INTERVAL 2 SECOND";
+
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param("iisi", $id_usuario, $id_curso, $accion, $actor_id);
         $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
+
+        if ($res['total'] == 0) {
+            $insert = $this->db->prepare("INSERT INTO log_asignaciones (id_usuario, id_curso, accion, actor_id)
+                                          VALUES (?, ?, ?, ?)");
+            $insert->bind_param("iisi", $id_usuario, $id_curso, $accion, $actor_id);
+            $insert->execute();
+        }
     }
 
     // Obtener histórico de un usuario

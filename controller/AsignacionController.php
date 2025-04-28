@@ -6,7 +6,9 @@ if (!isset($_SESSION['usuario']) || ($_SESSION['usuario']['rol'] != 'admin' && $
 }
 
 require_once '../models/Asignacion.php';
+require_once '../models/Inscripcion.php';
 $asignacion = new Asignacion();
+$inscripcion = new Inscripcion();
 
 
 
@@ -36,9 +38,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['asignar'])) {
 if (isset($_POST['eliminar_asignacion'])) {
     $id_usuario = $_POST['id_usuario'];
     $id_curso   = $_POST['id_curso'];
+
+    // 1. Eliminar de cursos_usuarios
     $asignacion->eliminarAsignacion($id_usuario, $id_curso);
-    // ── Log any removal (self‐unenroll or admin remove) ──
+    // 2. Eliminar también de inscripciones (por si el estudiante se autoinscribió)
+    $inscripcion->anular($id_usuario, $id_curso);
+    // 3. Registrar acción
     $asignacion->logAccion($id_usuario, $id_curso, $_SESSION['usuario']['id'], 'eliminacion');
+    // 4. Redirigir
     header("Location: ../views/asignaciones/index.php?msg=eliminado");
     exit;
 }

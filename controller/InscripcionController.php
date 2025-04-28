@@ -18,7 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['inscribir'])) {
     if ($ins->cuposDisponibles($id_curso)) {
         $ins->inscribir($id_usuario, $id_curso);
         $asignacion->asignarCursos($id_usuario, [$id_curso]);
-        $asignacion->logAccion($id_usuario, $id_curso, $id_usuario, 'asignacion');
+
+        // Solo registrar log si es autoinscripción (no fue asignado por admin)
+        if (!isset($_POST['desde_admin'])) {
+            $asignacion->logAccion($id_usuario, $id_curso, $id_usuario, 'asignacion');
+        }
+
         header("Location: ../views/inscripciones/index.php?msg=ok");
     } else {
         header("Location: ../views/inscripciones/index.php?msg=full");
