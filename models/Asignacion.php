@@ -59,4 +59,30 @@ class Asignacion
         $result = $stmt->get_result()->fetch_assoc();
         return $result['total'];
     }
+
+
+    // Loguear cada acción
+    public function logAccion($id_usuario, $id_curso, $actor_id, $accion)
+    {
+        $sql = "INSERT INTO log_asignaciones (id_usuario, id_curso, accion, actor_id)
+            VALUES (?, ?, ?, ?)";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("iisi", $id_usuario, $id_curso, $accion, $actor_id);
+        $stmt->execute();
+    }
+
+    // Obtener histórico de un usuario
+    public function obtenerLog($id_usuario)
+    {
+        $sql = "SELECT la.*, u.nombre AS actor_nombre, c.nombre AS curso_nombre
+            FROM log_asignaciones la
+            JOIN usuarios u  ON la.actor_id  = u.id
+            JOIN cursos   c  ON la.id_curso  = c.id
+           WHERE la.id_usuario = ?
+           ORDER BY la.fecha_asignacion DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
 }

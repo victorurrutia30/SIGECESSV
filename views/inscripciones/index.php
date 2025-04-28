@@ -5,11 +5,10 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'estudiante'
     exit;
 }
 
-require_once '../../models/Curso.php';
-require_once '../../models/Inscripcion.php';
+require_once '../../models/Asignacion.php';
+$asignacion = new Asignacion();
+$cursos     = $asignacion->obtenerCursos();
 
-$curso = new Curso();
-$cursos = $curso->obtenerCursos();
 $pageTitle = 'Inscripciones';
 include '../partials/head.php';
 ?>
@@ -28,25 +27,40 @@ include '../partials/head.php';
             <div class="app-content">
                 <div class="container-fluid my-5">
                     <?php if (isset($_GET['msg'])): ?>
-                        <div class="alert alert-<?= ($_GET['msg'] == 'full' ? 'warning' : 'success') ?>" role="alert">
-                            <?php
-                            if ($_GET['msg'] == 'ok')    echo "Inscripción exitosa.";
-                            if ($_GET['msg'] == 'full')  echo "Lo siento, el curso está lleno.";
-                            ?>
+                        <div class="alert alert-<?= ($_GET['msg'] == 'full' ? 'warning' : 'success') ?>">
+                            <?= $_GET['msg'] == 'full' ? 'Lo siento, el curso está lleno.' : 'Inscripción exitosa.' ?>
                         </div>
                     <?php endif; ?>
 
                     <div class="row g-4">
-                        <?php foreach ($cursos as $c): ?>
+                        <?php foreach ($cursos as $c):
+                            $count = $asignacion->contarAsignacionesPorCurso($c['id']);
+                            $cupoMax = 30;
+                            $inscrito = false;
+                            // comprobar si ya está inscrito:
+                            $mis = $asignacion->cursosAsignados($_SESSION['usuario']['id']);
+                            foreach ($mis as $m) {
+                                if ($m['id'] == $c['id']) {
+                                    $inscrito = true;
+                                    break;
+                                }
+                            }
+                        ?>
                             <div class="col-md-6 col-lg-3">
                                 <div class="card h-100">
-                                    <div class="card-body">
+                                    <div class="card-body text-center">
                                         <h5><?= htmlspecialchars($c['nombre']) ?></h5>
-                                        <form action="../../controller/InscripcionController.php" method="POST">
-                                            <input type="hidden" name="inscribir" value="1">
-                                            <input type="hidden" name="id_curso" value="<?= $c['id'] ?>">
-                                            <button class="btn btn-dashboard w-100">Inscribirse</button>
-                                        </form>
+                                        <?php if ($inscrito): ?>
+                                            <span class="badge bg-success">Inscrito</span>
+                                        <?php elseif ($count >= $cupoMax): ?>
+                                            <span class="badge bg-warning">Lleno</span>
+                                        <?php else: ?>
+                                            <form action="../../controller/AsignacionController.php" method="POST">
+                                                <input type="hidden" name="inscribir" value="1">
+                                                <input type="hidden" name="id_curso" value="<?= $c['id'] ?>">
+                                                <button class="btn btn-dashboard w-100">Inscribirme</button>
+                                            </form>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -58,6 +72,3 @@ include '../partials/head.php';
 
         <?php include '../partials/footer.php'; ?>
     </div>
-</body>
-
-</html>

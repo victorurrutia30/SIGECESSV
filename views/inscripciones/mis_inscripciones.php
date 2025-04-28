@@ -1,14 +1,10 @@
 <?php
 session_start();
-if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'estudiante') {
-    header("Location: ../../index.php");
-    exit;
-}
-
-require_once '../../models/Inscripcion.php';
-$ins = new Inscripcion();
-$id_usuario = $_SESSION['usuario']['id'];
-$inscripciones = $ins->listarPorUsuario($id_usuario);
+// … validación de sesión …
+require_once '../../models/Asignacion.php';
+$asignacion    = new Asignacion();
+$id_usuario    = $_SESSION['usuario']['id'];
+$inscripciones = $asignacion->obtenerLog($id_usuario);
 
 $pageTitle = 'Mi Historial';
 include '../partials/head.php';
@@ -28,30 +24,26 @@ include '../partials/head.php';
             <div class="app-content">
                 <div class="container-fluid my-5 mis-cursos-section">
                     <?php if ($inscripciones->num_rows === 0): ?>
-                        <div class="alert alert-info text-center">No tienes inscripciones aún.</div>
+                        <div class="alert alert-info text-center">No hay historial de inscripciones.</div>
                     <?php else: ?>
-                        <table class="table table-bordered table-mis-cursos text-center">
+                        <table class="table table-bordered text-center">
                             <thead>
                                 <tr>
                                     <th>Curso</th>
+                                    <th>Acción</th>
+                                    <th>Quién</th>
                                     <th>Fecha</th>
-                                    <th>Anular</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($inscripciones as $i): ?>
+                                <?php while ($row = $inscripciones->fetch_assoc()): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($i['nombre']) ?></td>
-                                        <td><?= $i['fecha_inscripcion'] ?></td>
-                                        <td>
-                                            <form action="../../controller/InscripcionController.php" method="POST">
-                                                <input type="hidden" name="anular" value="1">
-                                                <input type="hidden" name="id_curso" value="<?= $i['id_curso'] ?>">
-                                                <button class="btn btn-sm btn-outline-danger">Anular</button>
-                                            </form>
-                                        </td>
+                                        <td><?= htmlspecialchars($row['curso_nombre']) ?></td>
+                                        <td><?= $row['accion'] === 'asignacion' ? 'Inscribió' : 'Anuló' ?></td>
+                                        <td><?= htmlspecialchars($row['actor_nombre']) ?></td>
+                                        <td><?= $row['fecha_asignacion'] ?></td>
                                     </tr>
-                                <?php endforeach; ?>
+                                <?php endwhile; ?>
                             </tbody>
                         </table>
                     <?php endif; ?>
@@ -61,6 +53,3 @@ include '../partials/head.php';
 
         <?php include '../partials/footer.php'; ?>
     </div>
-</body>
-
-</html>

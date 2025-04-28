@@ -44,6 +44,7 @@ include '../partials/head.php';
                                     <tr>
                                         <th>ID Curso</th>
                                         <th>Nombre del Curso</th>
+                                        <th>Anular</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -51,6 +52,14 @@ include '../partials/head.php';
                                         <tr>
                                             <td><?= htmlspecialchars($curso['id']) ?></td>
                                             <td><?= htmlspecialchars($curso['nombre']) ?></td>
+                                            <td>
+                                                <form action="../../controller/InscripcionController.php" method="POST">
+                                                    <input type="hidden" name="anular" value="1">
+                                                    <input type="hidden" name="id_curso" value="<?= $curso['id'] ?>">
+
+                                                    <button class="btn btn-sm btn-outline-danger">Anular</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

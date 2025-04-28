@@ -112,7 +112,7 @@ include '../partials/head.php';
                                                         }
                                                     }
                                                     ?>
-                                                    <form action="../../controller/AsignacionController.php" method="POST" class="d-inline">
+                                                    <form action="../../controller/InscripcionController.php" method="POST" class="d-inline">
                                                         <input type="hidden" name="inscribir" value="1">
                                                         <input type="hidden" name="id_curso" value="<?= $c['id'] ?>">
                                                         <?php if (!$yaInscrito): ?>
