@@ -79,24 +79,52 @@ include '../partials/head.php';
                                         <td><?= htmlspecialchars($c['nombre']) ?></td>
                                         <td>
                                             <div class="d-flex flex-wrap justify-content-center align-items-center gap-2">
+                                                <!-- Ver -->
                                                 <button class="btn btn-ver btn-sm" data-bs-toggle="modal" data-bs-target="#viewModal<?= $c['id'] ?>">
                                                     <i class="fas fa-eye me-1"></i> Ver
                                                 </button>
 
                                                 <?php if ($_SESSION['usuario']['rol'] != 'estudiante'): ?>
+                                                    <!-- Editar -->
                                                     <button class="btn btn-editar btn-sm" data-bs-toggle="modal" data-bs-target="#editModal<?= $c['id'] ?>">
                                                         <i class="fas fa-edit me-1"></i> Editar
                                                     </button>
-
+                                                    <!-- Eliminar -->
                                                     <?php $asignaciones = $asignacionObj->contarAsignacionesPorCurso($c['id']); ?>
                                                     <?php if ($asignaciones == 0): ?>
                                                         <button class="btn btn-eliminar btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $c['id'] ?>">
                                                             <i class="fas fa-trash me-1"></i> Eliminar
                                                         </button>
                                                     <?php else: ?>
-                                                        <span class="badge bg-secondary">Curso asignado</span>
+                                                        <span class="badge bg-secondary">En uso</span>
                                                     <?php endif; ?>
+
+                                                <?php else: ?>
+                                                    <!-- INSCRIPCIÓN PARA ESTUDIANTE -->
+                                                    <?php
+                                                    $usuarioId = $_SESSION['usuario']['id'];
+                                                    $inscritos = $asignacionObj->cursosAsignados($usuarioId);
+                                                    $yaInscrito = false;
+                                                    foreach ($inscritos as $mc) {
+                                                        if ($mc['id'] === $c['id']) {
+                                                            $yaInscrito = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    ?>
+                                                    <form action="../../controller/AsignacionController.php" method="POST" class="d-inline">
+                                                        <input type="hidden" name="inscribir" value="1">
+                                                        <input type="hidden" name="id_curso" value="<?= $c['id'] ?>">
+                                                        <?php if (!$yaInscrito): ?>
+                                                            <button type="submit" class="btn btn-agregar btn-sm">
+                                                                <i class="fas fa-sign-in-alt me-1"></i> Inscribirme
+                                                            </button>
+                                                        <?php else: ?>
+                                                            <span class="badge bg-success">Inscrito</span>
+                                                        <?php endif; ?>
+                                                    </form>
                                                 <?php endif; ?>
+
                                             </div>
                                         </td>
                                     </tr>
@@ -119,6 +147,3 @@ include '../partials/head.php';
         <?php include '../partials/footer.php'; ?>
     </div>
     <!-- end::App Wrapper -->
-</body>
-
-</html>

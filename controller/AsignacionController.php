@@ -8,6 +8,17 @@ if (!isset($_SESSION['usuario']) || ($_SESSION['usuario']['rol'] != 'admin' && $
 require_once '../models/Asignacion.php';
 $asignacion = new Asignacion();
 
+
+// ── NUEVO: inscripción del estudiante ─────────────────────────
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['inscribir'])) {
+    $id_usuario = $_SESSION['usuario']['id'];
+    $id_curso   = $_POST['id_curso'];
+    $asignacion->asignarCursos($id_usuario, [$id_curso]);
+    header("Location: ../views/usuarios/mis_cursos.php?msg=inscrito");
+    exit;
+}
+// ────────────────────────────────────────────────────────────────
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['asignar'])) {
     $id_usuario = $_POST['id_usuario'];
     $ids_cursos = $_POST['cursos'] ?? [];

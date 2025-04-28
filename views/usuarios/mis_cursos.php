@@ -8,38 +8,61 @@ if (!isset($_SESSION['usuario'])) {
 require_once '../../models/Asignacion.php';
 $asignacion = new Asignacion();
 $id_usuario = $_SESSION['usuario']['id'];
-$cursos = $asignacion->cursosAsignados($id_usuario);
+$cursos     = $asignacion->cursosAsignados($id_usuario);
 
+$pageTitle = 'Mis Cursos Asignados';
 include '../partials/head.php';
-include '../partials/navbar.php';
 ?>
 
-<div class="mis-cursos-section container my-5">
-    <h2 class="mis-cursos-title text-center mb-4">Mis Cursos Asignados</h2>
+<body class="layout-fixed sidebar-expand-lg sidebar-mini bg-body-tertiary app-loaded sidebar-collapse">
+    <div class="app-wrapper">
+        <?php include '../partials/navbar.php'; ?>
+        <?php include '../partials/sidebar.php'; ?>
 
-    <?php if ($cursos->num_rows === 0): ?>
-        <div class="alert alert-info text-center">No tienes cursos asignados aún.</div>
-    <?php else: ?>
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover table-mis-cursos text-center align-middle">
-                <thead class="table-head">
-                    <tr>
-                        <th>ID Curso</th>
-                        <th>Nombre del Curso</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($cursos as $curso): ?>
-                        <tr>
-                            <td><?= $curso['id'] ?></td>
-                            <td><?= $curso['nombre'] ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-    <?php endif; ?>
-</div>
+        <main class="app-main"><!--begin::App Main-->
+            <!--begin::App Content Header-->
+            <div class="app-content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h1 class="mb-0"><?= htmlspecialchars($pageTitle) ?></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end::App Content Header-->
 
+            <!--begin::App Content-->
+            <div class="app-content">
+                <div class="container-fluid mis-cursos-section my-5">
+                    <?php if ($cursos->num_rows === 0): ?>
+                        <div class="alert alert-info text-center">No tienes cursos asignados aún.</div>
+                    <?php else: ?>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-mis-cursos text-center align-middle">
+                                <thead class="table-head">
+                                    <tr>
+                                        <th>ID Curso</th>
+                                        <th>Nombre del Curso</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($cursos as $curso): ?>
+                                        <tr>
+                                            <td><?= htmlspecialchars($curso['id']) ?></td>
+                                            <td><?= htmlspecialchars($curso['nombre']) ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <!--end::App Content-->
+        </main>
+        <!--end::App Main-->
 
-<?php include '../partials/footer.php'; ?>
+        <?php include '../partials/footer.php'; ?>
+    </div>
+    <!--end::App Wrapper-->
