@@ -22,7 +22,7 @@
                 data-accordion="false"
                 role="menu">
                 <li class="nav-item">
-                    <a href="/SIGECES/views/usuarios/dashboard.php" class="nav-link">
+                    <a href="/SIGECES/controller/DashboardController.php" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>

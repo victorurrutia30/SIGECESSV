@@ -14,7 +14,7 @@ include __DIR__ . '/../partials/head.php';
         <?php include __DIR__ . '/../partials/sidebar.php'; ?>
 
         <main class="app-main">
-            <!--begin::App Content Header-->
+            <!-- Cabecera -->
             <div class="app-content-header">
                 <div class="container-fluid">
                     <div class="row">
@@ -30,70 +30,68 @@ include __DIR__ . '/../partials/head.php';
                     </div>
                 </div>
             </div>
-            <!--end::App Content Header-->
 
             <div class="app-content">
                 <div class="container-fluid">
-                    <div class="row">
-                        <!-- Usuarios -->
-                        <div class="col-lg-3 col-6">
-                            <div class="small-box text-bg-primary">
-                                <div class="inner">
-                                    <h3><?= $data['usuarios'] ?? 0 ?></h3>
-                                    <p>Total de Usuarios</p>
-                                </div>
-                                <i class="bi bi-people small-box-icon"></i>
-                                <a href="#" class="small-box-footer">
-                                    Más info <i class="bi bi-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
 
-                        <!-- Docentes -->
-                        <div class="col-lg-3 col-6">
-                            <div class="small-box text-bg-success">
-                                <div class="inner">
-                                    <h3><?= $data['docentes'] ?? 0 ?></h3>
-                                    <p>Total de Docentes</p>
+                    <?php if ($_SESSION['usuario']['rol'] !== 'estudiante'): ?>
+                        <div class="row">
+                            <!-- Usuarios -->
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box text-bg-primary">
+                                    <div class="inner">
+                                        <h3><?= $data['usuarios'] ?? 0 ?></h3>
+                                        <p>Total de Usuarios</p>
+                                    </div>
+                                    <i class="bi bi-people small-box-icon"></i>
                                 </div>
-                                <i class="bi bi-person-badge small-box-icon"></i>
-                                <a href="#" class="small-box-footer">
-                                    Más info <i class="bi bi-arrow-right"></i>
-                                </a>
+                            </div>
+                            <!-- Docentes -->
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box text-bg-success">
+                                    <div class="inner">
+                                        <h3><?= $data['docentes'] ?? 0 ?></h3>
+                                        <p>Total de Docentes</p>
+                                    </div>
+                                    <i class="bi bi-person-badge small-box-icon"></i>
+                                </div>
+                            </div>
+                            <!-- Cursos -->
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box text-bg-warning">
+                                    <div class="inner">
+                                        <h3><?= $data['cursos'] ?? 0 ?></h3>
+                                        <p>Total de Cursos</p>
+                                    </div>
+                                    <i class="bi bi-journal-text small-box-icon"></i>
+                                </div>
+                            </div>
+                            <!-- Inscripciones -->
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box text-bg-danger">
+                                    <div class="inner">
+                                        <h3><?= $data['inscripciones'] ?? 0 ?></h3>
+                                        <p>Total de Inscripciones</p>
+                                    </div>
+                                    <i class="bi bi-pencil-square small-box-icon"></i>
+                                </div>
                             </div>
                         </div>
+                    <?php else: ?>
+                        <div class="row">
+                            <div class="col-12 text-center py-5">
+                                <h2 class="fw-light">¡Bienvenido, <?= htmlspecialchars($_SESSION['usuario']['nombre']) ?>!</h2>
+                                <p class="text-muted">Accede al menú lateral para ver tus cursos e inscripciones.</p>
+                            </div>
+                        </div>
+                    <?php endif; ?>
 
-                        <!-- Cursos -->
-                        <div class="col-lg-3 col-6">
-                            <div class="small-box text-bg-warning">
-                                <div class="inner">
-                                    <h3><?= $data['cursos'] ?? 0 ?></h3>
-                                    <p>Total de Cursos</p>
-                                </div>
-                                <i class="bi bi-journal-text small-box-icon"></i>
-                                <a href="#" class="small-box-footer">
-                                    Más info <i class="bi bi-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Inscripciones -->
-                        <div class="col-lg-3 col-6">
-                            <div class="small-box text-bg-danger">
-                                <div class="inner">
-                                    <h3><?= $data['inscripciones'] ?? 0 ?></h3>
-                                    <p>Total de Inscripciones</p>
-                                </div>
-                                <i class="bi bi-pencil-square small-box-icon"></i>
-                                <a href="#" class="small-box-footer">
-                                    Más info <i class="bi bi-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </main>
 
         <?php include __DIR__ . '/../partials/footer.php'; ?>
     </div>
+</body>
+
+</html>

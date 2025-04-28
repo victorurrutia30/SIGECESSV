@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['usuario'])) {
-    header("Location: views/usuarios/dashboard.php");
+    header("Location: controller/DashboardController.php");
     exit;
 }
 ?>

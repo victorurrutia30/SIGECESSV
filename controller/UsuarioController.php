@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($datos) {
             $_SESSION['usuario'] = $datos;
-            header("Location: ../views/usuarios/dashboard.php");
+            header("Location: ../controller/DashboardController.php");
         } else {
             header("Location: ../views/usuarios/login.php?msg=error");
         }
