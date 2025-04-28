@@ -1,0 +1,612 @@
+/* main container wrapper para ajustar la pantalla  */
+.main-wrapper {
+    max-width: 1200px; 
+    margin: 0 auto;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+/* ===== seccion 1 tipo hero  ===== */
+
+.hero-section {
+    background-color: #E2E2E2; 
+    color: #4F5153; 
+    padding: 40px 0;
+  }
+  
+  .hero-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .hero-icon {
+    color: #FDBA4D; 
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #570926; 
+    margin-bottom: 0.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.2rem;
+    color: #570926;
+    margin-bottom: 0.5rem;
+  }
+  
+  .hero-description {
+    font-size: 1rem;
+    color: #4F5153;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-login-btn {
+    background-color: #FDBA4D;
+    border-color: #FDBA4D;
+    color: #570926;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .hero-login-btn:hover {
+    background-color: #e49e2f;
+    border-color: #e49e2f;
+    color: #ffffff;
+  }
+  
+  
+
+  /* ===== SECCION DE QUE ES? ===== */
+
+.about-sigeces-section {
+    background-color: #FFFFFF; 
+    color: #4F5153;
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  
+  .about-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #570926;
+  }
+  
+  .about-description {
+    font-size: 1rem;
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+    color: #4F5153;
+  }
+  
+  .feature-item {
+    background-color: #F4F4F9;
+    border-radius: 12px;
+    padding: 20px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .feature-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  .feature-item {
+    background-color: #F4F4F9;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .feature-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .feature-icon {
+    color: #FDBA4D;
+  }
+  
+  .feature-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 10px;
+    color: #570926;
+  }
+  
+  .feature-text {
+    font-size: 0.95rem;
+    color: #4F5153;
+  }
+  
+  
+
+  /* ===== BENEDICIOS ===== */
+
+.benefits-section {
+    background-color: #F4F4F9; 
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  
+  .benefits-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #570926;
+    margin-bottom: 40px;
+  }
+  
+  .benefit-card {
+    border: none;
+    border-radius: 16px;
+    background-color: #ffffff;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .benefit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .benefit-icon {
+    color: #FDBA4D;
+  }
+  
+  .benefit-card .card-title {
+    color: #570926;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .benefit-card .card-text {
+    font-size: 0.95rem;
+    color: #4F5153;
+  }
+  
+
+  /* ===== COMO FUNCIONA???' ===== */
+
+.how-it-works-section {
+    background-color: #FFFFFF;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    color: #4F5153;
+  }
+  
+  .howit-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #570926;
+    margin-bottom: 20px;
+  }
+  
+  .howit-description {
+    font-size: 1rem;
+    max-width: 700px;
+    margin: 0 auto 40px auto;
+  }
+  
+  .howit-step {
+    background-color: #F4F4F9;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 250px; 
+    text-align: center;
+  }
+  
+  .howit-step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+  }
+  
+  .howit-icon {
+    color: #FDBA4D;
+  }
+  
+  .howit-step-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #570926;
+    margin-bottom: 0.5rem;
+  }
+  
+  .howit-step-text {
+    font-size: 0.95rem;
+    color: #4F5153;
+  }
+  
+
+  /* ===== CONFIGURANDO EL NAVBAR ===== */
+
+.navbar-sigeces {
+    background-color: #570926;
+    padding: 0.6rem 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-sigeces .navbar-brand {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #ffffff;
+  }
+  
+  .navbar-sigeces .navbar-brand:hover {
+    color: #FDBA4D;
+  }
+  
+  .navbar-sigeces .nav-link-sigeces {
+    color: #ffffff;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .navbar-sigeces .nav-link-sigeces:hover,
+  .navbar-sigeces .nav-link-sigeces:focus {
+    background-color: #FDBA4D;
+    color: #570926;
+  }
+  
+  .navbar-sigeces .nav-item + .nav-item {
+    margin-left: 6px;
+  }
+  
+
+  
+
+  
+  /* ===== FOOTER  ===== */
+
+.footer-sigeces {
+    background-color: #4F5153; 
+    color: #ffffff;
+    font-size: 0.95rem;
+  }
+  
+  .footer-sigeces p {
+    margin: 0;
+    color: #ffffff;
+  }
+  
+  .footer-sigeces strong {
+    color: #FDBA4D; 
+  }
+  
+
+  /* ===== LOGIN  ===== 
+
+.login-section {
+    background-color: #F4F4F9;
+    min-height: 100vh;
+  }
+  
+  .login-box {
+    background-color: #FFFFFF;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
+  }
+  
+  .login-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #570926;
+  }
+  
+  .btn-login {
+    background-color: #FDBA4D;
+    border-color: #FDBA4D;
+    color: #570926;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-login:hover {
+    background-color: #e49e2f;
+    border-color: #e49e2f;
+    color: #ffffff;
+  }
+  */
+  .login-section {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #E2E2E2;
+  }
+  
+  .login-box {
+    background-color: #570926; 
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 420px;
+  }
+  
+  .logo-container {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .logo-container img {
+    width: 240px; 
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .login-title {
+    font-size: 1.5rem;
+    color: #FFFFFF;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .form-label {
+    font-size: 0.9rem;
+    color: #FDBA4D; 
+    margin-bottom: 0.25rem;
+  }
+  
+  .form-control {
+    font-size: 0.9rem;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid #FFFFFF;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    width: 100%;
+    background-color: #F4F4F9;
+    color: #570926;
+    box-sizing: border-box;
+  }
+  
+  .form-control:focus {
+    border-color: #FDBA4D;
+    outline: none;
+    box-shadow: 0 0 5px #FDBA4D;
+  }
+  
+  .btn-login {
+    background-color: #FDBA4D;
+    color: #570926;
+    font-size: 1rem;
+    padding: 0.6rem;
+    border: none;
+    border-radius: 6px;
+    width: 100%;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-login:hover {
+    background-color: #e0a843;
+  }
+  
+  .alert {
+    border-radius: 6px;
+    padding: 0.6rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+  
+  .alert-danger {
+    background-color: #DC2626;
+    color: #FFFFFF;
+  }
+  
+  
+
+  /* ===== ASIGNAR DE CURSOS  ===== */
+
+.asignacion-section {
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    padding: 40px 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  }
+  
+  .asignacion-title {
+    color: #570926;
+    font-weight: 700;
+    font-size: 1.8rem;
+  }
+  
+  .form-asignacion .form-label {
+    color: #570926;
+  }
+  
+  .btn-asignar {
+    background-color: #FDBA4D;
+    border-color: #FDBA4D;
+    color: #570926;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .btn-asignar:hover {
+    background-color: #e49e2f;
+    border-color: #e49e2f;
+    color: #ffffff;
+  }
+  
+  .table-asignacion thead {
+    background-color: #570926;
+    color: #ffffff;
+  }
+  
+  .table-asignacion td,
+  .table-asignacion th {
+    vertical-align: middle;
+    font-size: 0.95rem;
+  }
+  
+  .table-asignacion .btn-outline-danger {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+  }
+  
+  .bg-light-subtle {
+    background-color: #F4F4F9 !important;
+  }
+  
+
+  /* ===== CURSOS LA PARTE VISUAL ===== */
+
+.cursos-section {
+    background-color: #FFFFFF;
+    padding: 40px 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  .cursos-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #570926;
+  }
+  
+  .btn-agregar {
+    background-color: #16A34A; 
+    border-color: #16A34A;
+    color: #ffffff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-agregar:hover {
+    background-color: #12833a;
+    border-color: #12833a;
+  }
+  
+  .btn-ver {
+    background-color: #4F5153;
+    color: #ffffff;
+  }
+  
+  .btn-editar {
+    background-color: #FDBA4D;
+    color: #570926;
+    border: none;
+  }
+  
+  .btn-eliminar {
+    background-color: #DC2626;
+    color: #ffffff;
+    border: none;
+  }
+  
+  .btn-ver:hover,
+  .btn-editar:hover,
+  .btn-eliminar:hover {
+    opacity: 0.85;
+  }
+  
+  .table-cursos thead {
+    background-color: #570926;
+    color: #ffffff;
+  }
+
+  .table-cursos td {
+    vertical-align: middle;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  
+
+  /* ===== MIS CURSOS  ===== */
+
+.mis-cursos-section {
+    background-color: #FFFFFF;
+    padding: 40px 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  .mis-cursos-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #570926;
+  }
+  
+  .table-mis-cursos thead {
+    background-color: #570926;
+    color: #ffffff;
+  }
+  
+  .table-mis-cursos td,
+  .table-mis-cursos th {
+    font-size: 0.95rem;
+    vertical-align: middle;
+    padding: 12px;
+  }
+  
+
+  /* ===== DASHBOARD  ===== */
+
+.dashboard-section {
+    background-color: #ffffff;
+    padding: 40px 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  .dashboard-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #570926;
+  }
+  
+  .dashboard-subtitle {
+    font-size: 1rem;
+    color: #4F5153;
+    margin-bottom: 1.5rem;
+  }
+  
+  .btn-dashboard {
+    background-color: #FDBA4D;
+    border-color: #FDBA4D;
+    color: #570926;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .btn-dashboard:hover {
+    background-color: #e49e2f;
+    color: #fff;
+  }
+  
+  .dashboard-card {
+    background-color: #F4F4F9;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .dashboard-card h5 {
+    font-weight: 600;
+    color: #570926;
+    margin-bottom: 0.5rem;
+  }
+  
+  .dashboard-card p {
+    color: #4F5153;
+    margin: 0;
+  }
+  
