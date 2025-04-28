@@ -60,6 +60,12 @@
                             <p>Asignar Cursos</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="/SIGECES/views/notas/index.php" class="nav-link">
+                            <i class="nav-icon fas fa-clipboard-check"></i>
+                            <p>Asignar Calificaciones</p>
+                        </a>
+                    </li>
                 <?php endif; ?>
                 <li class="nav-item">
                     <a href="/SIGECES/controller/logout.php" class="nav-link">

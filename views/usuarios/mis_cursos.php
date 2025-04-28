@@ -7,9 +7,11 @@ if (!isset($_SESSION['usuario'])) {
 
 require_once '../../models/Asignacion.php';
 require_once '../../models/Inscripcion.php';
+require_once '../../models/Nota.php';
 
 $asignModel = new Asignacion();
 $insModel   = new Inscripcion();
+$notaModel  = new Nota();
 $id_usuario = $_SESSION['usuario']['id'];
 
 // Traer cursos asignados por admin
@@ -63,7 +65,9 @@ include '../partials/head.php';
                                     <tr>
                                         <th>ID Curso</th>
                                         <th>Nombre del Curso</th>
+                                        <th>Nota Actual</th>
                                         <th>Acción</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -71,6 +75,12 @@ include '../partials/head.php';
                                         <tr>
                                             <td><?= htmlspecialchars($c['id']) ?></td>
                                             <td><?= htmlspecialchars($c['nombre']) ?></td>
+                                            <td>
+                                                <?php
+                                                $nota = $notaModel->obtenerNota($id_usuario, $c['id']);
+                                                echo ($nota !== null) ? number_format($nota, 2) : '<span class="text-muted">Sin nota</span>';
+                                                ?>
+                                            </td>
                                             <td>
                                                 <!-- Ver Modal trigger -->
                                                 <button
@@ -92,6 +102,7 @@ include '../partials/head.php';
                                                     </button>
                                                 </form>
                                             </td>
+
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
