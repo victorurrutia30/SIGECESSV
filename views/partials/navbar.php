@@ -48,11 +48,7 @@
                     </li>
                 <?php endif; ?>
 
-                <li class="nav-item">
-                    <a class="nav-link nav-link-sigeces" href="/SIGECES/views/cursos/index.php">
-                        <i class="fas fa-chalkboard me-1"></i> Cursos
-                    </a>
-                </li>
+
 
 
                 <li class="nav-item">

@@ -27,12 +27,18 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="/SIGECES/views/cursos/index.php" class="nav-link">
-                        <i class="nav-icon fas fa-chalkboard"></i>
-                        <p>Cursos</p>
-                    </a>
-                </li>
+
+
+                <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
+                    <li class="nav-item">
+                        <a href="/SIGECES/views/cursos/index.php" class="nav-link">
+                            <i class="nav-icon fas fa-chalkboard"></i>
+                            <p>Cursos</p>
+                        </a>
+                    </li>
+
+                <?php endif; ?>
+
                 <?php if ($_SESSION['usuario']['rol'] === 'estudiante'): ?>
                     <li class="nav-item">
                         <a href="/SIGECES/views/usuarios/mis_cursos.php" class="nav-link">
