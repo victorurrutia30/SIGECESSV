@@ -13,23 +13,27 @@ class Asignacion
 
     public function obtenerUsuarios()
     {
-        return $this->db->query("SELECT * FROM usuarios ORDER BY nombre");
+        $res = $this->db->query("SELECT * FROM usuarios ORDER BY nombre");
+        return $res->fetch_all(MYSQLI_ASSOC);
     }
 
     public function obtenerCursos()
     {
-        return $this->db->query("SELECT * FROM cursos ORDER BY nombre");
+        $res = $this->db->query("SELECT * FROM cursos ORDER BY nombre");
+        return $res->fetch_all(MYSQLI_ASSOC);
     }
 
     public function cursosAsignados($id_usuario)
     {
-        $query = "SELECT cursos.* FROM cursos
-                  JOIN cursos_usuarios ON cursos.id = cursos_usuarios.id_curso
-                  WHERE cursos_usuarios.id_usuario = ?";
+        $query = "SELECT c.* 
+                    FROM cursos c
+                    JOIN cursos_usuarios cu ON c.id = cu.id_curso
+                   WHERE cu.id_usuario = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("i", $id_usuario);
         $stmt->execute();
-        return $stmt->get_result();
+        $res = $stmt->get_result();
+        return $res->fetch_all(MYSQLI_ASSOC);
     }
 
     public function asignarCursos($id_usuario, $ids_cursos)

@@ -6,11 +6,38 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 require_once '../../models/Asignacion.php';
-$asignacion = new Asignacion();
-$id_usuario = $_SESSION['usuario']['id'];
-$cursos     = $asignacion->cursosAsignados($id_usuario);
+require_once '../../models/Inscripcion.php';
 
-$pageTitle = 'Mis Cursos Asignados';
+$asignModel = new Asignacion();
+$insModel   = new Inscripcion();
+$id_usuario = $_SESSION['usuario']['id'];
+
+// Traer cursos asignados por admin
+$adminCursos = $asignModel->cursosAsignados($id_usuario);
+// Traer inscripciones hechas por el propio estudiante
+$selfIns = $insModel->listarPorUsuario($id_usuario);
+
+// Consolidar y deduplicar
+$courses = [];
+foreach ($adminCursos as $c) {
+    $courses[$c['id']] = [
+        'id'     => $c['id'],
+        'nombre' => $c['nombre'],
+        'source' => 'admin'
+    ];
+}
+foreach ($selfIns as $i) {
+    // Solo agregar si no existe todavía
+    if (!isset($courses[$i['id_curso']])) {
+        $courses[$i['id_curso']] = [
+            'id'     => $i['id_curso'],
+            'nombre' => $i['nombre'],
+            'source' => 'self'
+        ];
+    }
+}
+
+$pageTitle = 'Mis Cursos';
 include '../partials/head.php';
 ?>
 
@@ -19,45 +46,50 @@ include '../partials/head.php';
         <?php include '../partials/navbar.php'; ?>
         <?php include '../partials/sidebar.php'; ?>
 
-        <main class="app-main"><!--begin::App Main-->
-            <!--begin::App Content Header-->
+        <main class="app-main">
             <div class="app-content-header">
                 <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <h1 class="mb-0"><?= htmlspecialchars($pageTitle) ?></h1>
-                        </div>
-                    </div>
+                    <h1 class="mb-0"><?= htmlspecialchars($pageTitle) ?></h1>
                 </div>
             </div>
-            <!--end::App Content Header-->
-
-            <!--begin::App Content-->
             <div class="app-content">
                 <div class="container-fluid mis-cursos-section my-5">
-                    <?php if ($cursos->num_rows === 0): ?>
+                    <?php if (empty($courses)): ?>
                         <div class="alert alert-info text-center">No tienes cursos asignados aún.</div>
                     <?php else: ?>
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-mis-cursos text-center align-middle">
-                                <thead class="table-head">
+                            <table class="table table-bordered table-hover text-center align-middle">
+                                <thead>
                                     <tr>
                                         <th>ID Curso</th>
                                         <th>Nombre del Curso</th>
-                                        <th>Anular</th>
+                                        <th>Acción</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($cursos as $curso): ?>
+                                    <?php foreach ($courses as $c): ?>
                                         <tr>
-                                            <td><?= htmlspecialchars($curso['id']) ?></td>
-                                            <td><?= htmlspecialchars($curso['nombre']) ?></td>
+                                            <td><?= htmlspecialchars($c['id']) ?></td>
+                                            <td><?= htmlspecialchars($c['nombre']) ?></td>
                                             <td>
-                                                <form action="../../controller/InscripcionController.php" method="POST">
-                                                    <input type="hidden" name="anular" value="1">
-                                                    <input type="hidden" name="id_curso" value="<?= $curso['id'] ?>">
+                                                <!-- Ver Modal trigger -->
+                                                <button
+                                                    class="btn btn-sm btn-secondary"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#viewModal<?= $c['id'] ?>">
+                                                    Ver
+                                                </button>
 
-                                                    <button class="btn btn-sm btn-outline-danger">Anular</button>
+                                                <!-- Anular -->
+                                                <form
+                                                    action="../../controller/InscripcionController.php"
+                                                    method="POST"
+                                                    class="d-inline">
+                                                    <input type="hidden" name="anular" value="1">
+                                                    <input type="hidden" name="id_curso" value="<?= $c['id'] ?>">
+                                                    <button class="btn btn-sm btn-outline-danger">
+                                                        Anular
+                                                    </button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -68,10 +100,32 @@ include '../partials/head.php';
                     <?php endif; ?>
                 </div>
             </div>
-            <!--end::App Content-->
         </main>
-        <!--end::App Main-->
 
         <?php include '../partials/footer.php'; ?>
     </div>
-    <!--end::App Wrapper-->
+
+    <!-- View Modal(s) -->
+    <?php foreach ($courses as $c): ?>
+        <div class="modal fade" id="viewModal<?= $c['id'] ?>" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Detalles del Curso</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>ID del Curso:</strong> <?= htmlspecialchars($c['id']) ?></p>
+                        <p><strong>Nombre del Curso:</strong> <?= htmlspecialchars($c['nombre']) ?></p>
+                        <p>
+                            <strong>Asignado por:</strong>
+                            <?= $c['source'] === 'admin' ? 'Administrador' : 'Auto-inscripción' ?>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>

@@ -39,7 +39,7 @@ class Inscripcion
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param("i", $id_usuario);
         $stmt->execute();
-        return $stmt->get_result();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
     // Verificar cupos disponibles (simulado)
@@ -51,5 +51,15 @@ class Inscripcion
         $stmt->execute();
         $res = $stmt->get_result()->fetch_assoc();
         return ($res['inscritos'] < $cupo_max);
+    }
+
+    public function contarInscripcionesPorCurso($id_curso)
+    {
+        $sql = "SELECT COUNT(*) AS total FROM inscripciones WHERE id_curso = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id_curso);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
+        return $res['total'];
     }
 }

@@ -91,17 +91,18 @@ include '../partials/head.php';
                                         <td><?= htmlspecialchars($u['rol']) ?></td>
                                         <td>
                                             <?php
+                                            // ahora cursosAsignados devuelve un array
                                             $asignados = $asignacion->cursosAsignados($u['id']);
                                             foreach ($asignados as $asig):
                                             ?>
-                                                <div class="d-flex justify-content-between align-items-center mb-1 p-2 rounded border bg-light-subtle">
+                                                <div class="...">
                                                     <span><?= htmlspecialchars($asig['nombre']) ?></span>
                                                     <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
                                                         <form action="../../controller/AsignacionController.php" method="POST" class="ms-2">
                                                             <input type="hidden" name="id_usuario" value="<?= $u['id'] ?>">
                                                             <input type="hidden" name="id_curso" value="<?= $asig['id'] ?>">
                                                             <input type="hidden" name="eliminar_asignacion" value="1">
-                                                            <button type="submit" class="btn btn-sm btn-outline-danger">Quitar</button>
+                                                            <button class="btn btn-sm btn-outline-danger">Quitar</button>
                                                         </form>
                                                     <?php endif; ?>
                                                 </div>

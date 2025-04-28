@@ -7,10 +7,11 @@ if (!isset($_SESSION['usuario'])) {
 
 require_once '../../models/Curso.php';
 require_once '../../models/Asignacion.php';
-
+require_once '../../models/Inscripcion.php';   // ← nuevo
+$insObj       = new Inscripcion();            // ← nuevo
+$asignacionObj = new Asignacion();
 $curso         = new Curso();
 $cursos        = $curso->obtenerCursos();
-$asignacionObj = new Asignacion();
 
 $pageTitle = 'Gestión de Cursos';
 include '../partials/head.php';
@@ -90,8 +91,11 @@ include '../partials/head.php';
                                                         <i class="fas fa-edit me-1"></i> Editar
                                                     </button>
                                                     <!-- Eliminar -->
-                                                    <?php $asignaciones = $asignacionObj->contarAsignacionesPorCurso($c['id']); ?>
-                                                    <?php if ($asignaciones == 0): ?>
+                                                    <?php
+                                                    $asigCount = $asignacionObj->contarAsignacionesPorCurso($c['id']);
+                                                    $insCount  = $insObj->contarInscripcionesPorCurso($c['id']);
+                                                    ?>
+                                                    <?php if ($asigCount + $insCount === 0): ?>
                                                         <button class="btn btn-eliminar btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $c['id'] ?>">
                                                             <i class="fas fa-trash me-1"></i> Eliminar
                                                         </button>
@@ -120,7 +124,7 @@ include '../partials/head.php';
                                                                 <i class="fas fa-sign-in-alt me-1"></i> Inscribirme
                                                             </button>
                                                         <?php else: ?>
-                                                            <span class="badge bg-success">Inscrito</span>
+                                                            <span class="badge bg-success">Ya inscrito</span>
                                                         <?php endif; ?>
                                                     </form>
                                                 <?php endif; ?>
