@@ -100,4 +100,15 @@ class Asignacion
         $stmt->execute();
         return $stmt->get_result();
     }
+
+    //obtener estudiantes con cursos 
+    public function estudiantesConCursos()
+    {
+        $query = "SELECT DISTINCT u.id, u.nombre, u.rol
+                  FROM usuarios u
+                  JOIN cursos_usuarios cu ON u.id = cu.id_usuario
+                  WHERE u.rol = 'estudiante'";
+        $res = $this->db->query($query);
+        return $res->fetch_all(MYSQLI_ASSOC);
+    }
 }

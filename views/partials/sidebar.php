@@ -55,6 +55,12 @@
                 <?php endif; ?>
                 <?php if (in_array($_SESSION['usuario']['rol'], ['admin', 'docente'])): ?>
                     <li class="nav-item">
+                        <a href="/SIGECES/views/usuarios/admin_index.php" class="nav-link">
+                            <i class="nav-icon fas fa-tasks"></i>
+                            <p>Usuarios</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="/SIGECES/views/asignaciones/index.php" class="nav-link">
                             <i class="nav-icon fas fa-tasks"></i>
                             <p>Asignar Cursos</p>

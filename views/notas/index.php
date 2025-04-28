@@ -10,7 +10,9 @@ require_once '../../models/Nota.php';
 $asignacion = new Asignacion();
 $notaModel = new Nota();
 
-$usuarios = $asignacion->obtenerUsuarios();
+
+$usuarios = $asignacion->estudiantesConCursos(); // cambio aquí
+
 $cursos   = $asignacion->obtenerCursos();
 
 $pageTitle = 'Asignación de Calificaciones';
@@ -51,12 +53,14 @@ include '../partials/head.php';
 
                         <div class="mb-3">
                             <label>Curso:</label>
-                            <select name="id_curso" class="form-select" required>
-                                <option value="">Seleccionar...</option>
-                                <?php foreach ($cursos as $c): ?>
-                                    <option value="<?= $c['id'] ?>"><?= $c['nombre'] ?></option>
-                                <?php endforeach; ?>
+                            <select name="id_curso" id="id_curso" class="form-select" required>
+                                <option value="">Selecciona primero un estudiante</option>
                             </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Nota actual (si existe):</label>
+                            <input type="text" id="nota_actual" class="form-control" readonly>
                         </div>
 
                         <div class="mb-3">
@@ -71,3 +75,46 @@ include '../partials/head.php';
         </main>
         <?php include '../partials/footer.php'; ?>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const estudianteSelect = document.querySelector('select[name="id_usuario"]');
+            const cursoSelect = document.getElementById('id_curso');
+            const notaActual = document.getElementById('nota_actual');
+
+            estudianteSelect.addEventListener('change', () => {
+                const id_usuario = estudianteSelect.value;
+
+                cursoSelect.innerHTML = '<option value="">Cargando...</option>';
+                notaActual.value = '';
+
+                if (!id_usuario) return;
+
+                fetch('../../controller/NotaAjaxController.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: new URLSearchParams({
+                            id_usuario
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        cursoSelect.innerHTML = '<option value="">Seleccionar curso...</option>';
+                        data.forEach(curso => {
+                            const opt = document.createElement('option');
+                            opt.value = curso.id;
+                            opt.textContent = curso.nombre;
+                            opt.dataset.nota = curso.nota ?? '';
+                            cursoSelect.appendChild(opt);
+                        });
+                    });
+            });
+
+            cursoSelect.addEventListener('change', () => {
+                const nota = cursoSelect.selectedOptions[0]?.dataset?.nota;
+                notaActual.value = nota ? parseFloat(nota).toFixed(2) : 'Sin nota';
+            });
+        });
+    </script>
