@@ -674,8 +674,7 @@
   color: #ffffff !important;
 }
 
-.navbar-sigeces .nav-link:hover,
-.navbar-sigeces .nav-link:focus {
+.navbar-sigeces .nav-link:hover {
   background-color: #FDBA4D !important;
   color: #570926 !important;
 }
