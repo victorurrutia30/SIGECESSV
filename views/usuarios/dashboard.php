@@ -191,6 +191,7 @@ include __DIR__ . '/../partials/head.php';
                         </div>
 
 
+
                         <!-- Chart.js -->
                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                         <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
@@ -409,6 +410,206 @@ include __DIR__ . '/../partials/head.php';
                                 </p>
                             </div>
                         </div>
+
+
+                        <div class="row mb-4">
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box text-bg-primary">
+                                    <div class="inner">
+                                        <h3><?= $data['cursosInscritos'] ?? 0 ?></h3>
+                                        <p>Cursos Inscritos</p>
+                                    </div>
+                                    <i class="bi bi-book small-box-icon"></i>
+                                </div>
+                            </div>
+
+                            <!-- CARD: Cursos Completados -->
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box text-bg-success">
+                                    <div class="inner">
+                                        <h3><?= $data['cursosCompletados'] ?? 0 ?></h3>
+                                        <p>Cursos Con Nota</p>
+                                    </div>
+                                    <i class="bi bi-check-circle small-box-icon"></i>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box text-bg-info">
+                                    <div class="inner">
+                                        <h3><?= $data['promedioUsuario'] ?? '0.00' ?></h3>
+                                        <p>Mi Promedio</p>
+                                    </div>
+                                    <i class="bi bi-star-fill small-box-icon"></i>
+                                </div>
+                            </div>
+
+                            <!-- Pendientes de Calificar -->
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box text-bg-warning">
+                                    <div class="inner">
+                                        <h3><?= $data['pendientesUsuario'] ?? 0 ?></h3>
+                                        <p>Pendientes de Calificar</p>
+                                    </div>
+                                    <i class="bi bi-clock small-box-icon"></i>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Evolución de Mi Promedio -->
+                        <div class="col">
+                            <div class="card dashboard-card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Evolución de Mi Promedio</h5>
+                                </div>
+                                <div class="card-body d-flex align-items-center justify-content-center">
+                                    <canvas id="promedioTrendChart" width="400" height="300"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notas por Curso (barras) -->
+                        <div style="position:relative; width:100%; height:300px;">
+                            <canvas id="notasCursoChart"></canvas>
+                        </div>
+
+
+
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+                        <script>
+                            (function() {
+                                // 0) Función para escalar el canvas en pantallas retina
+                                function resizeCanvas(canvas) {
+                                    const dpr = window.devicePixelRatio || 1;
+                                    const rect = canvas.getBoundingClientRect();
+                                    canvas.width = rect.width * dpr;
+                                    canvas.height = rect.height * dpr;
+                                    canvas.getContext('2d').scale(dpr, dpr);
+                                }
+
+                                // 1) Globales de Chart.js
+                                Chart.defaults.font.family = '"Source Sans 3", sans-serif';
+                                Chart.defaults.font.size = 12;
+                                Chart.defaults.color = '#4F5153';
+
+                                // 2) Paleta SIGECES (aislada)
+                                const SIGECES_COLORS = [
+                                    '#570926', '#FDBA4D', '#4F5153',
+                                    '#16A34A', '#0EA5E9', '#DC2626'
+                                ];
+
+                                // 3) Gráfico de línea: Evolución de Mi Promedio
+                                const canvasProm = document.getElementById('promedioTrendChart');
+                                resizeCanvas(canvasProm);
+
+                                const rawProm = <?= json_encode($data['tendenciaPromedio'], JSON_HEX_TAG) ?>;
+                                const labelsProm = rawProm.map(r => r.fecha);
+                                const valuesProm = rawProm.map(r => parseFloat(r.promedio));
+
+                                new Chart(canvasProm.getContext('2d'), {
+                                    type: 'line',
+                                    data: {
+                                        labels: labelsProm,
+                                        datasets: [{
+                                            label: 'Promedio acumulado',
+                                            data: valuesProm,
+                                            fill: false,
+                                            tension: 0.4,
+                                            borderColor: SIGECES_COLORS[1],
+                                            borderWidth: 2,
+                                            pointRadius: 3
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        scales: {
+                                            x: {
+                                                type: 'time',
+                                                time: {
+                                                    unit: 'day',
+                                                    tooltipFormat: 'yyyy-MM-dd'
+                                                },
+                                                grid: {
+                                                    color: '#e0e0e0'
+                                                }
+                                            },
+                                            y: {
+                                                beginAtZero: true,
+                                                grid: {
+                                                    color: '#e0e0e0'
+                                                }
+                                            }
+                                        },
+                                        plugins: {
+                                            legend: {
+                                                display: false
+                                            },
+                                            title: {
+                                                display: true,
+                                                text: 'Evolución de Mi Promedio'
+                                            }
+                                        }
+                                    }
+                                });
+
+                                // 4) Gráfico de barras: Notas por Curso
+                                const canvasNotas = document.getElementById('notasCursoChart');
+                                resizeCanvas(canvasNotas);
+
+                                const rawNotas = <?= json_encode($data['notasCurso'], JSON_HEX_TAG) ?>;
+                                const labelsNotas = rawNotas.map(r => r.nombre);
+                                const valuesNotas = rawNotas.map(r => parseFloat(r.nota));
+
+                                new Chart(canvasNotas.getContext('2d'), {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labelsNotas,
+                                        datasets: [{
+                                            label: 'Mi nota',
+                                            data: valuesNotas,
+                                            backgroundColor: SIGECES_COLORS.slice(0, valuesNotas.length),
+                                            borderColor: '#ffffff',
+                                            borderWidth: 2
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        scales: {
+                                            x: {
+                                                grid: {
+                                                    display: false
+                                                },
+                                                ticks: {
+                                                    autoSkip: false
+                                                }
+                                            },
+                                            y: {
+                                                beginAtZero: true,
+                                                ticks: {
+                                                    stepSize: 1
+                                                }
+                                            }
+                                        },
+                                        plugins: {
+                                            legend: {
+                                                display: false
+                                            },
+                                            title: {
+                                                display: true,
+                                                text: 'Notas por Curso'
+                                            },
+                                            tooltip: {
+                                                padding: 8
+                                            }
+                                        }
+                                    }
+                                });
+                            })();
+                        </script>
+
                     <?php endif; ?>
 
                 </div>

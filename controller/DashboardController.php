@@ -22,7 +22,15 @@ $data = [
     'pendientesCalificar'     => $dashboard->contarPendientesCalificar(),
     'rolesDist'               => $dashboard->rolesDistribution(),
     'inscripcionesTrend'     => $dashboard->inscripcionesPorFecha(30),
+    'cursosInscritos'        => $dashboard->cursosInscritos($_SESSION['usuario']['id']),
+    'cursosCompletados'      => $dashboard->cursosCompletados($_SESSION['usuario']['id']),
+    'promedioUsuario'     => $dashboard->promedioUsuario($_SESSION['usuario']['id']),
+    'pendientesUsuario'   => $dashboard->pendientesUsuario($_SESSION['usuario']['id']),
+    'tendenciaPromedio'       => $dashboard->tendenciaPromedioUsuario($_SESSION['usuario']['id'], 'day'),
+    'notasCurso'              => $dashboard->notasPorCursoUsuario($_SESSION['usuario']['id']),
+
 ];
+
 
 // Definimos título y cargamos head.php si lo necesitas
 $pageTitle = 'Dashboard';

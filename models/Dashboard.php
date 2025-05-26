@@ -190,4 +190,163 @@ class Dashboard
         }
         return $rows;
     }
+
+    /**
+     * PARA ESTUDIANTES 
+     */
+
+    public function cursosInscritos($id_usuario)
+    {
+        $sql = "
+        SELECT COUNT(*) AS total
+FROM cursos_usuarios
+WHERE id_usuario = ?;
+    ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
+        return (int) $res['total'];
+    }
+
+    /**
+     * Número de cursos donde el estudiante ya tiene nota
+     */
+    public function cursosCompletados($id_usuario)
+    {
+        $sql = "
+        SELECT COUNT(*) AS total
+          FROM calificaciones
+         WHERE id_usuario = ?
+           AND nota IS NOT NULL
+    ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
+        return (int) $res['total'];
+    }
+
+    /**
+     * Promedio de notas de un usuario específico
+     */
+    public function promedioUsuario($id_usuario)
+    {
+        $sql = "
+        SELECT AVG(nota) AS promedio
+          FROM calificaciones
+         WHERE id_usuario = ?
+           AND nota IS NOT NULL
+    ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
+        return $res['promedio'] !== null
+            ? round((float)$res['promedio'], 2)
+            : 0.00;
+    }
+
+    /**
+     * Cursos en los que está inscrito (por inscripción o asignación)
+     * pero aún no tiene nota.
+     */
+    public function pendientesUsuario($id_usuario)
+    {
+        $sql = "
+        SELECT COUNT(*) AS total
+          FROM (
+              SELECT cu.id_curso
+                FROM cursos_usuarios cu
+               WHERE cu.id_usuario = ?
+              UNION
+              SELECT i.id_curso
+                FROM inscripciones i
+               WHERE i.id_usuario = ?
+          ) AS cursos_totales
+    LEFT JOIN calificaciones c
+           ON cursos_totales.id_curso = c.id_curso
+          AND c.id_usuario = ?
+         WHERE c.nota IS NULL
+    ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("iii", $id_usuario, $id_usuario, $id_usuario);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
+        return (int) $res['total'];
+    }
+
+    /**
+     * Evolución acumulada del promedio del usuario,
+     * agrupada por día o semana usando las fechas correctas.
+     */
+    public function tendenciaPromedioUsuario($id_usuario, $periodo = 'day')
+    {
+        if ($periodo === 'week') {
+            // Agrupación semanal (ISO week), acumulado
+            $sql = "
+            SELECT 
+              STR_TO_DATE(CONCAT(t.yw, ' Monday'), '%X%V %W') AS fecha,
+              (
+                SELECT ROUND(AVG(nota), 2)
+                  FROM calificaciones
+                 WHERE id_usuario = ?
+                   AND nota IS NOT NULL
+                   AND YEARWEEK(fecha_actualizacion,1) <= t.yw
+              ) AS promedio
+            FROM (
+                SELECT DISTINCT YEARWEEK(fecha_actualizacion,1) AS yw
+                  FROM calificaciones
+                 WHERE id_usuario = ?
+                   AND nota IS NOT NULL
+            ) AS t
+            ORDER BY t.yw ASC
+        ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param("ii", $id_usuario, $id_usuario);
+        } else {
+            // Agrupación diaria, acumulado
+            $sql = "
+            SELECT 
+              t.fecha,
+              (
+                SELECT ROUND(AVG(nota), 2)
+                  FROM calificaciones
+                 WHERE id_usuario = ?
+                   AND nota IS NOT NULL
+                   AND DATE(fecha_actualizacion) <= t.fecha
+              ) AS promedio
+            FROM (
+                SELECT DISTINCT DATE(fecha_actualizacion) AS fecha
+                  FROM calificaciones
+                 WHERE id_usuario = ?
+                   AND nota IS NOT NULL
+            ) AS t
+            ORDER BY t.fecha ASC
+        ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param("ii", $id_usuario, $id_usuario);
+        }
+
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    /**
+     * Devuelve las notas de cada curso para un usuario específico
+     */
+    public function notasPorCursoUsuario($id_usuario)
+    {
+        $sql = "
+        SELECT c.nombre, n.nota
+          FROM calificaciones n
+    INNER JOIN cursos c
+            ON n.id_curso = c.id
+         WHERE n.id_usuario = ?
+    ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
 }
