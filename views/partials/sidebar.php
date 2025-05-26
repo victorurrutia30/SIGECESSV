@@ -58,6 +58,12 @@
                             <p>Mi Historial</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="/SIGECES/views/reportes/index.php" class="nav-link">
+                            <i class="nav-icon fas fa-book-open"></i>
+                            <p>Reportes</p>
+                        </a>
+                    </li>
                 <?php endif; ?>
                 <?php if (in_array($_SESSION['usuario']['rol'], ['admin', 'docente'])): ?>
                     <li class="nav-item">
@@ -76,6 +82,12 @@
                         <a href="/SIGECES/views/notas/index.php" class="nav-link">
                             <i class="nav-icon fas fa-clipboard-check"></i>
                             <p>Asignar Calificaciones</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/SIGECES/views/reportes/index.php" class="nav-link">
+                            <i class="nav-icon fas fa-book-open"></i>
+                            <p>Reportes</p>
                         </a>
                     </li>
                 <?php endif; ?>

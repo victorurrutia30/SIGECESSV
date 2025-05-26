@@ -40,6 +40,7 @@
                             <i class="fas fa-tasks me-1"></i> Asignar Cursos
                         </a>
                     </li>
+
                 <?php elseif ($_SESSION['usuario']['rol'] === 'estudiante'): ?>
                     <li class="nav-item">
                         <a class="nav-link nav-link-sigeces" href="/SIGECES/views/usuarios/mis_cursos.php">
