@@ -716,3 +716,12 @@ body {
   text-decoration: none;
   color: inherit;
 }
+
+canvas {
+    max-height: 300px;
+    max-width: 100%;
+    height: auto !important;
+}
+
+
+

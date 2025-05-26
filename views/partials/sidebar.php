@@ -6,7 +6,7 @@
     <div class="sidebar-brand">
         <a href="/SIGECES/index.php" class="brand-link">
             <img
-                src="/SIGECES/adminlte/dist/assets/img/AdminLTELogo.png"
+                src="/SIGECES/asset/img/AdminLTELogo.png"
                 alt="SIGECES Logo"
                 class="brand-image img-circle elevation-3"
                 style="opacity:.8" />

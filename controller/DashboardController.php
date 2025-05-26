@@ -17,6 +17,11 @@ $data = [
     'asignacionesPorCurso'    => $dashboard->asignacionesPorCurso(),
     'asignacionesRecientes'   => $dashboard->asignacionesRecientes(),
     'promedioNotas'           => $dashboard->promedioNotas(),
+    'estudiantes'           => $dashboard->contarEstudiantes(),
+    'activosUltimaSemana'     => $dashboard->contarActivosUltimaSemana(),
+    'pendientesCalificar'     => $dashboard->contarPendientesCalificar(),
+    'rolesDist'               => $dashboard->rolesDistribution(),
+    'inscripcionesTrend'     => $dashboard->inscripcionesPorFecha(30),
 ];
 
 // Definimos título y cargamos head.php si lo necesitas

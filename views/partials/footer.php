@@ -1,7 +1,7 @@
 <?php // Footer + scripts 
 ?>
 <footer class="app-footer"><!--begin::Footer-->
-    <strong>© 2025 <a href="https://adminlte.io" class="text-decoration-none">SIGECES</a>.</strong>
+    <strong>© 2025 <a href="https://www.utec.edu.sv/" class="text-decoration-none">UTEC</a>.</strong>
     Todos los derechos reservados.
 </footer><!--end::Footer-->
 

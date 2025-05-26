@@ -26,11 +26,41 @@ class Dashboard
         return (int) $fila['total'];
     }
 
+    public function contarEstudiantes()
+    {
+        $sql    = "SELECT COUNT(*) AS total FROM usuarios WHERE rol = 'estudiante'";
+        $result = $this->db->query($sql);
+        $fila   = $result->fetch_assoc();
+        return (int) $fila['total'];
+    }
+
     public function contarCursos()
     {
         $sql = "SELECT COUNT(*) AS total FROM cursos";
         $result = $this->db->query($sql);
         $fila = $result->fetch_assoc();
+        return (int) $fila['total'];
+    }
+
+    public function contarActivosUltimaSemana()
+    {
+        // Fecha y hora de hace 7 días
+        $hace7 = date('Y-m-d H:i:s', strtotime('-7 days'));
+
+        // Consulta única con UNION y COUNT DISTINCT
+        $sql = "
+      SELECT COUNT(DISTINCT id_usuario) AS total FROM (
+        SELECT id_usuario, fecha_inscripcion AS fecha 
+          FROM inscripciones 
+         WHERE fecha_inscripcion >= '$hace7'
+        UNION ALL
+        SELECT id_usuario, fecha_asignacion AS fecha 
+          FROM log_asignaciones 
+         WHERE fecha_asignacion >= '$hace7'
+      ) AS actividades
+    ";
+        $res  = $this->db->query($sql);
+        $fila = $res->fetch_assoc();
         return (int) $fila['total'];
     }
 
@@ -41,6 +71,7 @@ class Dashboard
         $fila = $result->fetch_assoc();
         return (int) $fila['total'];
     }
+
     public function inscripcionesPorCurso()
     {
         $sql = "
@@ -57,6 +88,22 @@ class Dashboard
         }
         return $rows;
     }
+
+    public function contarPendientesCalificar()
+    {
+        $sql = "
+      SELECT COUNT(*) AS total
+        FROM inscripciones i
+   LEFT JOIN calificaciones c 
+          ON i.id_usuario = c.id_usuario
+         AND i.id_curso   = c.id_curso
+       WHERE c.nota IS NULL
+    ";
+        $res  = $this->db->query($sql);
+        $fila = $res->fetch_assoc();
+        return (int) $fila['total'];
+    }
+
 
     // Devuelve número de asignaciones (tabla cursos_usuarios) por curso
     public function asignacionesPorCurso()
@@ -102,5 +149,45 @@ class Dashboard
         $res = $this->db->query($sql);
         $row = $res->fetch_assoc();
         return round((float)$row['promedio'], 2);
+    }
+
+
+    public function rolesDistribution()
+    {
+        $sql = "
+      SELECT rol, COUNT(*) AS total
+        FROM usuarios
+    GROUP BY rol
+    ";
+        $res  = $this->db->query($sql);
+        $rows = $res->fetch_all(MYSQLI_ASSOC);
+        // Asegurar que 'total' sea int
+        foreach ($rows as &$r) {
+            $r['total'] = (int)$r['total'];
+        }
+        return $rows;
+    }
+
+    public function inscripcionesPorFecha($dias = 30)
+    {
+        // Fecha de hace $dias días
+        $desde = date('Y-m-d', strtotime("-{$dias} days"));
+
+        $sql = "
+      SELECT 
+        DATE(fecha_inscripcion) AS fecha,
+        COUNT(*)           AS total
+      FROM inscripciones
+     WHERE fecha_inscripcion >= '$desde'
+  GROUP BY DATE(fecha_inscripcion)
+  ORDER BY DATE(fecha_inscripcion) ASC
+    ";
+        $res  = $this->db->query($sql);
+        $rows = $res->fetch_all(MYSQLI_ASSOC);
+        // Asegurarnos de que total sea int
+        foreach ($rows as &$r) {
+            $r['total'] = (int)$r['total'];
+        }
+        return $rows;
     }
 }
